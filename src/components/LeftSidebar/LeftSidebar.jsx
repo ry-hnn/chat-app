@@ -124,11 +124,6 @@ const LeftSidebar = () => {
         updateChatUserData();
     }, [chatData])
 
-    const handleChatSelect = (chat) => {
-        setChatUser(chat);
-        setChatVisible(true);
-      };
-    
 
 
     return (

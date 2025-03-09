@@ -34,7 +34,7 @@ const App = () => {
           <Route path="/profile" element={<ProfileUpdate />} />
         </Routes>
     </>
-  )
+  );
 };
 
 export default App;

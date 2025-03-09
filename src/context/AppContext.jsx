@@ -16,6 +16,7 @@ const AppContextProvider = (props) => {
     const [chatVisible,setChatVisible] = useState(false);
     const navigate = useNavigate();
 
+   
     const loadUserData = async (uid) => {
         try {
             const userRef = doc(db, 'users', uid);
@@ -38,6 +39,8 @@ const AppContextProvider = (props) => {
                     })
                 }
             }, 60000);
+
+         
 
             
            
@@ -68,7 +71,7 @@ const AppContextProvider = (props) => {
         }
     }, [userData])
 
-  
+
 
     useEffect(() => {
         if (userData) {

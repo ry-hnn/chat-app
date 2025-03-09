@@ -24,6 +24,10 @@ const Chatbox = () => {
     chatVisible,
     setChatVisible,
   } = useContext(AppContext);
+
+
+
+  
   const [input, setInput] = useState("");
   const scrollEnd = useRef();
 
@@ -197,7 +201,7 @@ const Chatbox = () => {
         <img onClick={sendMessage} src={assets.send_button} alt="" />
       </div>
     </div>
-  ) : (
+) : (
     <div className={`chat-welcome ${chatVisible ? "" : "hidden"}`}>
       <img src={assets.logo_icon} alt="" />
       <p>Chat anytime, anywhere</p>
