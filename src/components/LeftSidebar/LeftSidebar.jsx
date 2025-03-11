@@ -15,15 +15,22 @@ const LeftSidebar = () => {
     const navigate = useNavigate();
 
     const inputHandler = async (e) => {
-
         try {
             const input = e.target.value;
 
             if (input) {
                 setShowSearch(true);
                 const userRef = collection(db, "users");
-                const q = query(userRef, where("username", "==", input.toLowerCase()));
+                const q = query(userRef, where("username", ">=", input.toLowerCase()), where("username", "<=", input.toLowerCase() + '\uf8ff')); 
                 const querySnap = await getDocs(q);
+
+                const matchingUsers = querySnap.docs
+                .map(doc => doc.data())
+                .filter(user => 
+                  user.id !== userData.id && 
+                  (user.name.toLowerCase().includes(input) || user.username.toLowerCase().includes(input))
+                );
+        
                 if (!querySnap.empty && querySnap.docs[0].data().id !== userData.id) {
                     let userExist = false;
                     chatData.map((user) => {
@@ -36,6 +43,7 @@ const LeftSidebar = () => {
                     }
                 }
                 else {
+                    console.log("No matching users found");
                     setUser(null)
                 }
             }
@@ -43,7 +51,7 @@ const LeftSidebar = () => {
                 setShowSearch(false);
             }
         } catch (error) {
-            toast.error(error.message)
+            console.error("Error in inputHandler:", error);
         }
     }
 
@@ -123,7 +131,7 @@ const LeftSidebar = () => {
         }
         updateChatUserData();
     }, [chatData])
-
+    
 
 
     return (
@@ -143,18 +151,20 @@ const LeftSidebar = () => {
                 </div>
                 <div className="ls-search">
                     <img src={assets.search_icon} alt="" />
-                    <input onChange={inputHandler} type="text" placeholder='Search here..' />
+                    <input onChange={inputHandler} type="text" placeholder='Search here..' 
+                    onFocus={() => console.log("Input focused")}
+                    />
                 </div>
             </div>
             <div className="ls-list">
                 {showSearch && user
                     ? <div onClick={addChat} className='friends add-user'>
-                        <img src={user.avatar} alt="" />
+                        <img src={userData.avatar} alt="" />
                         <p>{user.name}</p>
                     </div>
                     : chatData.map((item, index) => (
                         <div onClick={() => setChat(item)} key={index} className={`friends ${item.messageSeen || item.messageId === messagesId ? "" : "border"}`}>
-                            <img src={item.userData.avatar} alt="" />
+                            <img src={userData.avatar} alt="" />
                             <div>
                                 <p>{item.userData.name}</p>
                                 <span>{item.lastMessage.slice(0, 30)}</span>

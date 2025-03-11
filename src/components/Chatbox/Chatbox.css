@@ -30,6 +30,7 @@
     align-items: center;
     gap: 5px;
 }
+
 .chat-input {
     display: flex;
     align-items: center;
